@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizHub — Luyện thi trắc nghiệm</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner">
+      <a href="./" class="brand"><span class="logo">Q</span>QuizHub</a>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost icon-btn" id="theme-btn" title="Đổi giao diện sáng/tối">🌙</button>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <section class="hero">
+      <h1>Chào bạn<span id="hello-name"></span> 👋</h1>
+      <p>Chọn một bài kiểm tra bên dưới và bắt đầu làm ngay. Kết quả được chấm tự động.</p>
+      <form class="name-box" id="name-form">
+        <input id="name-input" placeholder="Nhập họ tên của bạn..." maxlength="60" autocomplete="name" required>
+        <button class="btn btn-lg" style="background:#fff;color:#5b5bf0">Lưu tên</button>
+      </form>
+    </section>
+
+    <div class="toolbar">
+      <h2>📚 Bài kiểm tra</h2>
+      <div class="spacer"></div>
+      <select id="subject-filter" style="width:auto"><option value="">Tất cả môn</option></select>
+      <input class="search" id="search" placeholder="🔍 Tìm bài kiểm tra...">
+    </div>
+
+    <div class="grid grid-tests" id="tests">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+  </main>
+
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

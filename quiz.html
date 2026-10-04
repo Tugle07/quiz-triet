@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Làm bài — QuizHub</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    #app { max-width: 1300px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner">
+      <a href="./" class="brand"><span class="logo">Q</span>QuizHub</a>
+      <div class="spacer"></div>
+      <b id="student-name"></b>
+      <button class="btn btn-ghost icon-btn" id="theme-btn" title="Đổi giao diện sáng/tối">🌙</button>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <div class="center-screen" id="loading"><div class="spinner"></div></div>
+
+    <div id="quiz-ui" class="hidden">
+      <div class="quiz-header">
+        <h2 id="title" style="margin:0;flex:1"></h2>
+        <div class="chip primary" id="mode-badge"></div>
+        <div class="timer" id="timer">--:--</div>
+        <button class="btn btn-primary" id="btn-submit">Nộp bài</button>
+      </div>
+      
+      <div class="progress" style="margin-bottom:1.5rem"><div id="progress-bar" style="width:0"></div></div>
+
+      <div class="quiz-layout">
+        <div class="card">
+          <div class="q-number" id="q-number">Câu 1</div>
+          <div class="q-content" id="q-content"></div>
+          <div class="options" id="options"></div>
+          <div class="explain hidden" id="explain"></div>
+          
+          <div class="quiz-nav">
+            <button class="btn btn-outline" id="btn-prev">← Câu trước</button>
+            <button class="btn btn-outline" id="btn-flag">🚩 Đánh dấu xem lại</button>
+            <div class="spacer"></div>
+            <button class="btn btn-primary" id="btn-next">Câu tiếp theo →</button>
+          </div>
+        </div>
+
+        <div class="card palette-card">
+          <div style="font-weight:600;margin-bottom:1rem">Danh sách câu hỏi</div>
+          <div class="palette" id="palette"></div>
+          <div class="legend" style="margin-top:1rem">
+            <span><i style="background:var(--primary)"></i> Đã chọn</span>
+            <span><i style="background:var(--surface);border:1px solid var(--border)"></i> Chưa làm</span>
+            <span><i style="background:var(--warning)"></i> Đánh dấu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="result-ui" class="hidden">
+      <div class="card result-hero">
+        <div class="score-ring"><div id="r-score-wrap"><b><span id="r-score">0</span>/<span id="r-total">0</span></b><div class="muted" style="font-size:.85rem;margin-top:-.3rem">điểm</div></div></div>
+        <h2 id="r-msg">Hoàn thành bài thi!</h2>
+        <p class="muted" id="r-desc"></p>
+        
+        <div class="result-stats">
+          <div class="card"><span class="muted">Đã làm xong trong</span><b id="r-time"></b></div>
+          <div class="card"><span class="muted">Tỉ lệ đúng</span><b id="r-pct"></b></div>
+          <div class="card"><span class="muted">Điểm hệ 10</span><b id="r-10"></b></div>
+        </div>
+
+        <div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem">
+          <button class="btn btn-outline" id="btn-review">Xem lại bài làm</button>
+          <a class="btn btn-primary" href="./">Về trang chủ</a>
+        </div>
+      </div>
+      
+      <div id="leaderboard" class="hidden" style="margin-top:2rem">
+        <div class="card">
+          <h3 style="margin-bottom:1rem">🏆 Bảng Xếp Hạng Top 10</h3>
+          <div class="table-wrap">
+            <table id="lb-table">
+              <thead><tr><th>Hạng</th><th>Tên học viên</th><th>Điểm</th><th>Thời gian</th><th>Nộp lúc</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — QuizHub</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner" style="max-width:none">
+      <a href="admin.html" class="brand"><span class="logo">👑</span>QuizHub Admin</a>
+      <div class="spacer"></div>
+      <button class="btn btn-outline btn-sm" id="btn-logout">Đăng xuất</button>
+    </div>
+  </header>
+
+  <div class="center-screen" id="loading"><div class="spinner"></div></div>
+
+  <div class="center-screen hidden" id="login-ui">
+    <div class="card login-card">
+      <h2 style="text-align:center;margin-bottom:1.5rem">Đăng nhập Admin</h2>
+      <form id="login-form">
+        <label>Email</label>
+        <div class="field"><input type="email" id="l-email" required></div>
+        <label>Mật khẩu</label>
+        <div class="field"><input type="password" id="l-pwd" required></div>
+        <button class="btn btn-primary" style="width:100%" id="btn-login">Đăng nhập</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-layout hidden" id="admin-ui">
+    <aside class="sidebar">
+      <a href="#dashboard" class="active" data-view="dashboard">📊 Tổng quan</a>
+      <a href="#tests" data-view="tests">📚 Quản lý Bài thi</a>
+      <a href="#results" data-view="results">📈 Kết quả & BXH</a>
+    </aside>
+
+    <main class="admin-main">
+      <!-- VIEW: DASHBOARD -->
+      <div id="view-dashboard" class="view">
+        <div class="toolbar"><h2>Tổng quan</h2></div>
+        <div class="grid grid-stats">
+          <div class="card stat"><div class="ico">📚</div><div><b id="st-tests">0</b><span>Bài thi</span></div></div>
+          <div class="card stat"><div class="ico">📝</div><div><b id="st-attempts">0</b><span>Lượt làm bài</span></div></div>
+          <div class="card stat"><div class="ico">❓</div><div><b id="st-qs">0</b><span>Câu hỏi</span></div></div>
+        </div>
+      </div>
+
+      <!-- VIEW: TESTS LIST -->
+      <div id="view-tests" class="view hidden">
+        <div class="toolbar">
+          <h2>Quản lý Bài thi</h2>
+          <div class="spacer"></div>
+          <button class="btn btn-primary" id="btn-new-test">➕ Tạo bài mới</button>
+        </div>
+        <div class="card table-wrap" style="padding:0">
+          <table id="tests-table">
+            <thead><tr><th>Tên bài thi</th><th>Trạng thái</th><th>SL Câu</th><th>Lượt làm</th><th>Thao tác</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VIEW: TEST EDIT -->
+      <div id="view-edit-test" class="view hidden">
+        <div class="toolbar">
+          <button class="btn btn-ghost" onclick="location.hash='tests'">← Quay lại</button>
+          <h2 id="te-title">Tạo bài thi mới</h2>
+          <div class="spacer"></div>
+          <button class="btn btn-primary" id="btn-save-test">💾 Lưu bài thi</button>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: minmax(300px, 1fr) 2fr">
+          <!-- Cài đặt bài thi -->
+          <div class="card">
+            <h3>Cài đặt chung</h3><br>
+            <label>Tên bài thi *</label>
+            <div class="field"><input id="f-title" required></div>
+            <label>Mô tả / Hướng dẫn</label>
+            <div class="field"><textarea id="f-desc"></textarea></div>
+            <label>Môn học (Tùy chọn)</label>
+            <div class="field"><input id="f-subj" placeholder="VD: Triết học"></div>
+            
+            <div class="form-grid">
+              <div>
+                <label>Thời gian (phút)</label>
+                <div class="field"><input type="number" id="f-dur" placeholder="Để trống = ko giới hạn"></div>
+              </div>
+              <div>
+                <label>Chế độ</label>
+                <div class="field">
+                  <select id="f-mode">
+                    <option value="exam">Thi thật (Nộp mới biết điểm)</option>
+                    <option value="practice">Luyện tập (Biết ngay đúng sai)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <br><h3>Hiển thị</h3><br>
+            <label class="switch"><input type="checkbox" id="f-pub"> <span>Mở công khai (Public)</span></label>
+            <label class="switch"><input type="checkbox" id="f-shuf-q" checked> <span>Trộn thứ tự câu hỏi</span></label>
+            <label class="switch"><input type="checkbox" id="f-shuf-o" checked> <span>Trộn thứ tự đáp án</span></label>
+            <label class="switch"><input type="checkbox" id="f-show-ans" checked> <span>Cho phép xem lại đáp án sau khi nộp</span></label>
+            
+            <br>
+            <button class="btn btn-danger btn-sm" id="btn-del-test" style="width:100%">🗑️ Xóa bài thi này</button>
+          </div>
+
+          <!-- Ngân hàng câu hỏi -->
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+              <h3 style="margin:0">Danh sách câu hỏi (<span id="q-count">0</span>)</h3>
+              <div style="display:flex;gap:.5rem">
+                <button class="btn btn-outline btn-sm" id="btn-add-q">➕ Thêm 1 câu</button>
+                <button class="btn btn-success btn-sm" id="btn-import">📥 Import File (Word, Excel)</button>
+              </div>
+            </div>
+
+            <div id="q-list"></div>
+            <div class="empty muted" id="q-empty">Chưa có câu hỏi nào.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: RESULTS -->
+      <div id="view-results" class="view hidden">
+        <div class="toolbar">
+          <h2>Kết quả & BXH</h2>
+          <div class="spacer"></div>
+          <select id="rs-test-sel"><option value="">Tất cả bài thi</option></select>
+          <button class="btn btn-outline" id="btn-export-csv">📥 Xuất CSV</button>
+        </div>
+        <div class="card table-wrap" style="padding:0">
+          <table id="attempts-table">
+            <thead><tr><th>Học viên</th><th>Bài thi</th><th>Điểm</th><th>Thời gian làm</th><th>Nộp lúc</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <input type="file" id="file-input" accept=".docx,.xlsx,.csv,.txt" class="hidden">
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
